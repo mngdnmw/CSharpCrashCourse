@@ -5,20 +5,35 @@ namespace Day4
 {
     class MainClass
     {
+        static List<Video> videosList = new List<Video>();
+        static int id = 1;
+
         public static void Main(string[] args)
         {
+            
+
+			videosList.Add(new Video()
+			{
+				ID = id++,
+                Name = "Movie",
+				Director = "This guy",
+				Genre = "Documentary",
+			});
+
             Introduction();
 
-            List<string> menuItems = new List<string> { "Create video", "Read video", "Update video", "Delete video", "Exit" };
+            List<string> menuItems = new List<string> { "Create video", "Read videos", "Update video", "Delete video", "Search", "Exit" };
 
-            var selection = 0; 
+            var selection = 0;
 
-            while (selection !=5){
-                selection=ShowMenu(menuItems);
-				PrintSelection(selection);
+            while (selection != 6)
+            {
+                selection = ShowMenu(menuItems);
+                PrintSelection(selection);
             }
 
             Console.WriteLine("Hej hej!");
+
 
         }
 
@@ -26,7 +41,7 @@ namespace Day4
         {
             //Console.Clear();
 
-            Console.WriteLine("Select what you want to do:\n");
+            Console.WriteLine("\nSelect what you want to do:");
             for (int i = 0; i < menuItems.Count; i++)
             {
                 //Less memory heavy than the + signs
@@ -37,9 +52,9 @@ namespace Day4
 
             int selection;
 
-            while (!int.TryParse(Console.ReadLine(), out selection) || selection < 1 || selection > 5)
+            while (!int.TryParse(Console.ReadLine(), out selection) || selection < 1 || selection > 6)
             {
-                Console.WriteLine("You need to select one of the menu items by typing in the menu item number (between 1-5)\n");
+                Console.WriteLine("You need to select one of the menu items by typing in the menu item number (between 1-5)");
             }
 
             return selection;
@@ -51,20 +66,113 @@ namespace Day4
             switch (selection)
             {
                 case 1:
-                    Console.WriteLine("Create video\n");
+                    AddVideo();
                     break;
                 case 2:
-                    Console.WriteLine("Read video\n");
+                    ReadAllVideos();
                     break;
                 case 3:
-                    Console.WriteLine("Update video\n");
+                    EditVideo();
                     break;
                 case 4:
-                    Console.WriteLine("Delete video\n");
+                    DeleteVideo();
+                    break;
+                case 5:
+					ReadVidByID();
                     break;
                 default:
                     break;
             };
+
+        }
+
+        private static void ReadVidByID()
+        {
+            var video = FindVidByID();
+            if (video != null)
+             Console.WriteLine($"ID: {video.ID} Name: {video.Name} Director: {video.Director} Genre: {video.Genre}"); 
+            else
+                Console.WriteLine($"That video ID does not exist");
+		}
+
+        private static void EditVideo()
+        {
+            var video = FindVidByID();
+			Console.WriteLine("Name: ");
+            video.Name = Console.ReadLine();
+			Console.WriteLine("Director: ");
+            video.Director = Console.ReadLine();
+			Console.WriteLine("Genre: ");
+            video.Genre = Console.ReadLine();
+            Console.WriteLine("Video edited!");
+        }
+
+        private static void DeleteVideo()
+        {
+
+            var video = FindVidByID();
+            if(video!=null){
+                videosList.Remove(video);
+                Console.WriteLine("Video successfully deleted!");
+            }
+
+        }
+
+        private static Video FindVidByID()
+        {
+			Console.WriteLine("Insert video ID: ");
+
+			int id;
+			while (!int.TryParse(Console.ReadLine(), out id))
+			{
+				Console.WriteLine("Please insert a number");
+			}
+
+
+			foreach (var video in videosList)
+			{
+				if (video.ID == id)
+				{
+					return video;
+				}
+			}
+
+            return null;
+        }
+
+        private static void AddVideo()
+        {
+            
+
+            Console.WriteLine("Name: ");
+            var name = Console.ReadLine();
+			Console.WriteLine("Director: ");
+            var director = Console.ReadLine();
+			Console.WriteLine("Genre: ");
+            var genre = Console.ReadLine();
+            Console.WriteLine("Video successfully added!");
+
+            videosList.Add(new Video()
+            {
+                ID = id++,
+                Name = name,
+                Director = director,
+                Genre = genre,
+            });
+
+        }
+
+
+
+
+        private static void ReadAllVideos()
+        {
+            Console.WriteLine("List of movies");
+            foreach (var video in videosList)
+            {
+                Console.WriteLine($"ID: {video.ID} Name: {video.Name} Director: {video.Director} Genre: {video.Genre}");
+            }
+
 
         }
 
@@ -77,7 +185,7 @@ namespace Day4
 
         private static void Introduction()
         {
-            Console.WriteLine("Welcome to the world's best video application\xB2a \n\xB2aJust better than Jeppe's\n");
+            Console.WriteLine("Welcome to the world's best video application\xB2a \n\xB2aJust better than Jeppe's");
         }
 
 
