@@ -5,10 +5,12 @@ namespace Day4
 {
     class MainClass
     {
+        #region FakeDB
         static List<Video> videosList = new List<Video>();
         static int id = 1;
+		#endregion
 
-        public static void Main(string[] args)
+		public static void Main(string[] args)
         {
             
 
@@ -37,6 +39,11 @@ namespace Day4
 
         }
 
+        /// <summary>
+        /// Shows the menu.
+        /// </summary>
+        /// <returns>The menu list</returns>
+        /// <param name="menuItems">Menu items.</param>
         private static int ShowMenu(List<string> menuItems)
         {
             //Console.Clear();
@@ -161,9 +168,6 @@ namespace Day4
             });
 
         }
-
-
-
 
         private static void ReadAllVideos()
         {
